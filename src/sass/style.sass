@@ -1,0 +1,188 @@
+$green: #01d277
+$background: #181818
+$grey: #707070
+$font: 'Source Code Pro', monospace
+
+html 
+  font-size: 62.5%
+body
+  margin: 0
+  padding: 0
+  background: $background
+  font-family: $font
+
+a
+  text-decoration: none
+  color: black
+ul
+  list-style: none
+  padding: 0
+
+h1
+  font-family: 'Sarina', monospace
+  font-size: 4.6rem
+  margin: 20px 0 
+
+nav
+  color: $green
+  a
+    color: $green
+    font-size: 2.6rem
+  ul
+    display: flex
+    justify-content: space-around
+    align-items: center
+    flex-wrap: wrap
+    text-align: center
+    margin: 0 auto 20px 
+    li
+      margin: 0 20px
+
+header
+  width: 100%
+  height: 38vmax
+  position: relative
+  .bg
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: $background center
+    background-repeat: no-repeat
+    background-size: 100% auto
+    filter: brightness(0.6)
+    z-index: -1
+  .content
+    z-index: 10000
+    color: white
+    
+.todays-trending
+  position: absolute
+  bottom: 10%
+  left: 15%
+  h3
+    color: $grey
+    font-size: 3.8rem
+    font-weight: 400
+    margin: 0 
+    text-shadow: 1px 1px 2px black
+  h2
+    margin: -15px 20px 15px 0 
+    font-size: 5.6rem
+    text-shadow: black 3px 0 10px
+  .todays-more
+    display: flex
+    width: auto
+    height: 50px
+    max-width: 250px
+    font-size: 3.0rem
+
+.trending-week
+  h3
+    font-size: 3.8rem
+    font-weight: 400
+    margin: 60px 22% 0 
+    color: white
+.movie-grid
+  margin: 30px 22% 0 
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+  grid-gap: 50px 20px
+  .movie
+  .poster
+    background: white
+    img
+      cursor: pointer
+      border: 1px solid white
+      box-sizing: border-box
+      width: 100%
+      height: 100%
+  .description
+    background: white
+    width: 100%
+
+    .title
+      font-size: 2.4rem
+      margin: 0 5px
+      padding-top: 5px
+      line-height: 1.2
+      color: #181818
+    .species
+      color: $green
+      line-height: 1
+      margin: 0 5px
+      padding: 10px 0 10px
+
+      font-size: 1.4rem
+    .tagline
+      color: $grey
+      font-size: 1.4rem
+      margin: 0 5px 
+      padding: 0 0 10px
+
+.input-search
+    width: 60%
+    height: 50px
+    max-width: 1000px
+    border: none
+    border-bottom: 3px solid $green
+    background: $background
+    position: absolute
+    top: 20%
+    left: 0
+    right: 0
+    margin: 0 auto
+    color: white
+    font-family:  $font
+    font-size: 2.8rem
+    padding: 10px 20px 0 20px 
+    z-index: 99999
+    &::placeholder
+      font-size: 2.8rem
+      font-family: $font
+.search-outputs
+  position: absolute
+  top: calc(20% + 53px)
+  left: 0
+  right: 0
+  width: 60%
+  margin: 0 auto
+
+
+footer
+  margin: 80px 0 0
+  div
+    width: 100%
+    height: 70px
+    border-top: 1px solid $green
+    background: #292929
+    font-size: 2.2rem
+    display: flex
+    align-items: center
+    justify-content: center
+    p
+      color: #707070
+    a
+      color: $green
+
+@media (max-width:1100px)
+  html
+    font-size: 55%
+  .todays-trending
+    top: 45%
+          
+@media (max-width: 750px)
+  .input-search
+    width: 80vw
+  .movie-grid
+    margin: 30px 20px 0
+  .todays-trending
+    font-size: 30%
+@media (max-width: 500)
+  .todays-trending
+    h3
+      font-size: 1rem
+      color: blue
+    h2
+      color: blue

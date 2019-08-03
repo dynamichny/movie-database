@@ -1,0 +1,164 @@
+$black: white
+$white: #eaeaea
+$gray: white
+
+$text-arrow-space: 12px
+$shaft-width: 20px
+$newshaft-width: 64px
+$shaft-thickness: 3px
+$arrow-head-width: 12px
+$arrow-head-thickness: $shaft-thickness
+
+// Base
+
+*
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+.container
+  cursor: pointer
+  display: flex
+  background: black
+  align-items: center
+  justify-content: center
+  height: 100%
+
+ul
+  li
+    margin: 0 35px 0 0
+
+// The Arrow
+
+.the-arrow
+  width: $shaft-width
+  transition: all 0.2s
+
+  &.-left
+    position: absolute
+    top: 60%
+    left: 0
+
+    > .shaft
+      width: 0
+      background-color: $black
+
+      &:before,
+      &:after
+        width: 0
+        background-color: $black
+
+      &:before
+        transform: rotate(0)
+
+      &:after
+        transform: rotate(0)
+
+  &.-right
+    top: 3px
+
+    > .shaft
+      width: $shaft-width
+      transition-delay: 0.2s
+
+      &:before,
+      &:after
+        width: $arrow-head-width
+        transition-delay: 0.3s
+        transition: all 0.5s
+
+      &:before
+        transform: rotate(40deg)
+
+      &:after
+        transform: rotate(-40deg)
+
+  > .shaft
+    background-color: $black
+    display: block
+    height: $shaft-thickness
+    position: relative
+    transition: all 0.2s
+    transition-delay: 0
+    will-change: transform
+
+    &:before,
+    &:after
+      background-color: $black
+      content: ''
+      display: block
+      height: $arrow-head-thickness
+      position: absolute
+      top: 0
+      right: 0
+      transition: all 0.2s
+      transition-delay: 0
+
+    &:before
+      transform-origin: top right
+
+    &:after
+      transform-origin: bottom right
+
+// Animated Arrow Button
+
+.animated-arrow
+  display: inline-block
+  color: $black
+  font-size: 1em
+  font-style: italic
+  text-decoration: none
+  position: relative
+  transition: all 0.2s
+
+  &:hover
+    > .the-arrow.-left
+      > .shaft
+        width: $newshaft-width
+        transition-delay: 0.1s
+        background-color: $gray
+
+        &:before,
+        &:after
+          width: $arrow-head-width
+          transition-delay: 0.1s
+          background-color: $gray
+
+        &:before
+          transform: rotate(40deg)
+
+        &:after
+          transform: rotate(-40deg)
+
+    > .main
+      transform: translateX($shaft-width + $text-arrow-space)
+      transform: translateX($newshaft-width + $text-arrow-space)
+
+      > .the-arrow.-right
+        > .shaft
+          width: 0
+          transform: translateX(200%)
+          transition-delay: 0
+
+          &:before,
+          &:after
+            width: 0
+            transition-delay: 0
+            transition: all 0.1s
+
+          &:before
+            transform: rotate(0)
+
+          &:after
+            transform: rotate(0)
+
+  > .main
+    display: flex
+    align-items: center
+    transition: all 0.2s
+
+    > .text
+      margin: 0 $text-arrow-space 0 0
+      line-height: 1
+
+    > .the-arrow
+      position: relative

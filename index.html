@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Welcome to Movie Database</title>
+    <link rel="stylesheet" href="src/css/style.css" />
+    <link rel="stylesheet" href="src/css/popup.css" />
+    <link rel="stylesheet" href="src/css/seemore.css" />
+
+    <link
+      href="https://fonts.googleapis.com/css?family=Sarina|Source+Code+Pro&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <ul>
+        <li><h1>Movies Database</h1></li>
+        <li><a href="#">Watchlist</a></li>
+      </ul>
+    </nav>
+
+    <header>
+      <div class="bg"></div>
+      <div class="content">
+        <input type="text" name="search" class="input-search" placeholder="Search" />
+        <div class="search-outputs">
+          <div class="output">
+            <p>TITLE</p>
+          </div>
+        </div>
+        <div class="todays-trending">
+          <h3>Today's trending</h3>
+          <h2></h2>
+          <div class="container todays-more">
+            <ul>
+              <li>
+                <a class="animated-arrow" href="#">
+                  <span class="the-arrow -left">
+                    <span class="shaft"></span>
+                  </span>
+                  <span class="main">
+                    <span class="text">
+                      see more
+                    </span>
+                    <span class="the-arrow -right">
+                      <span class="shaft"></span>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="trending-week">
+      <h3>Trending this week</h3>
+      <div class="movie-grid"></div>
+    </section>
+
+    <footer>
+      <div>
+        <p>
+          Powered by <a href="https://www.themoviedb.org/" target="_blank">themoviedb.org</a> API.
+        </p>
+      </div>
+    </footer>
+
+    <!-- POPUP -->
+    <!-- <section class="movie-popup">
+      <div class="bg-popup"></div>
+      <div class="movie-cont">
+        <div class="movie-more">
+          <img src="" alt="Here should be a poster." />
+          <div class="descrpition">
+            <div class="description-heading">
+              <button class="close"><div></div></button>
+              <p class="title"></p>
+              <div class="generes-length">
+                <p class="generes"></p>
+                <div class="movie-length">
+                  <p></p>
+                </div>
+              </div>
+              <div class="line"></div>
+              <div class="info">
+                <div class="rating">
+                  <p class="rating1"></p>
+                  <p class="rating2">rating</p>
+                </div>
+                <div class="realise">
+                  <p class="realise1"></p>
+                  <p class="realise2">realise date</p>
+                </div>
+              </div>
+            </div>
+            <div class="description-text"></div>
+            <div class="buttons">
+              <div class="btn-seemore">See more</div>
+              <div class="btn-towatchlist">To watchlist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section> -->
+
+    <script src="src/js/main.js"></script>
+  </body>
+</html>
