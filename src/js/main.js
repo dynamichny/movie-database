@@ -33,6 +33,12 @@ window.onload = function() {
         });
       });
     });
+  document.querySelector('.input-search').addEventListener(
+    'keyup',
+    debounce(() => {
+      searchMovies(document.querySelector('.input-search').value);
+    }, 80)
+  );
 };
 
 function buildPoster(element) {
@@ -40,9 +46,13 @@ function buildPoster(element) {
   movie.classList.add('movie');
   movie.dataset.key = element.id;
   movie.innerHTML = `
-    <div class="poster"><img src='https://image.tmdb.org/t/p/w500${
+    ${
       element.poster_path
-    }' alt="Poster" /></div>
+        ? `<div class='poster'><img src='https://image.tmdb.org/t/p/w500${
+            element.poster_path
+          }' alt='Poster' /></div>`
+        : ''
+    }
     <div class="description">
       <p class="title">${element.title}</p>
       <p class="species">Realise date: ${element.release_date
@@ -56,6 +66,7 @@ async function buildMore(id) {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US`
   );
+
   const resp = await response.json();
   const moviePopup = await document.createElement('section');
   await moviePopup.classList.add('movie-popup');
@@ -106,7 +117,61 @@ async function buildMore(id) {
   });
 }
 
-/* function searchMovies(query) {
-  // https://api.themoviedb.org/3/search/movie?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US&query=ELEMENT&page=1&include_adult=false
+function searchMovies(query) {
+  const searchOutputs = document.querySelector('.search-outputs');
+  if (query === '') {
+    searchOutputs.innerHTML = '';
+    return;
+  }
+
+  fetch(
+    `https://api.themoviedb.org/3/search/movie?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US&query=${query}&page=1&include_adult=false`
+  )
+    .then(resp => resp.json())
+    .then(resp => {
+      document.querySelector('.search-outputs').innerHTML = '';
+      const items = resp.results;
+      items.map(each =>
+        document
+          .querySelector('.search-outputs')
+          .appendChild(appendToOutputs(each))
+      );
+      document.querySelectorAll('.output').forEach(each => {
+        each.addEventListener('click', () => {
+          buildMore(each.dataset.key);
+          document.querySelector('.search-outputs').innerHTML = '';
+        });
+      });
+    });
 }
-*/
+
+function appendToOutputs(obj) {
+  const output = document.createElement('div');
+  output.classList.add('output');
+  output.dataset.key = obj.id;
+  output.innerHTML = `
+  ${
+    obj.poster_path
+      ? `<img src='https://image.tmdb.org/t/p/w200${obj.poster_path}'/>`
+      : ''
+  }
+    <p class="output-title">${obj.title} (${obj.release_date.split('-')[0]})</p>
+  `;
+  return output;
+}
+
+function debounce(func, wait = 20, immediate = true) {
+  let timeout;
+  return function() {
+    const context = this;
+    const args = arguments;
+    const later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+}

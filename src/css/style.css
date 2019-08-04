@@ -1,5 +1,6 @@
 html {
-  font-size: 62.5%; }
+  font-size: 62.5%;
+  scroll-behavior: smooth; }
 
 body {
   margin: 0;
@@ -65,7 +66,7 @@ header {
     margin: 0;
     text-shadow: 1px 1px 2px black; }
   .todays-trending h2 {
-    margin: -15px 20px 15px 0;
+    margin: 0 20px 15px 0;
     font-size: 5.6rem;
     text-shadow: black 3px 0 10px; }
   .todays-trending .todays-more {
@@ -117,8 +118,9 @@ header {
 
 .input-search {
   width: 60%;
-  height: 50px;
+  height: 60px;
   max-width: 1000px;
+  box-sizing: border-box;
   border: none;
   border-bottom: 3px solid #01d277;
   background: #181818;
@@ -137,12 +139,37 @@ header {
     font-family: "Source Code Pro", monospace; }
 
 .search-outputs {
+  z-index: 9999;
+  max-width: 1000px;
   position: absolute;
-  top: calc(20% + 53px);
+  top: calc(20% + 60px);
   left: 0;
   right: 0;
-  width: 60%;
-  margin: 0 auto; }
+  width: calc(60%);
+  height: 50vh;
+  margin: 0 auto;
+  overflow-y: auto; }
+  .search-outputs .output {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    background: #242424;
+    padding: 10px 20px 0 20px;
+    width: 100%;
+    min-height: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer; }
+    .search-outputs .output img {
+      height: 80px; }
+    .search-outputs .output .output-title {
+      color: white;
+      margin: 0 30px;
+      font-size: 3rem;
+      padding: 7px 0; }
+    .search-outputs .output:hover {
+      background: #2d2d2d; }
+      .search-outputs .output:hover .output-title {
+        text-decoration: underline #01d277; }
 
 footer {
   margin: 80px 0 0; }
@@ -162,21 +189,30 @@ footer {
 
 @media (max-width: 1100px) {
   html {
-    font-size: 55%; }
+    font-size: 50%; }
   .todays-trending {
     top: 45%; } }
 
 @media (max-width: 750px) {
   .input-search {
     width: 80vw; }
+  .search-outputs {
+    width: 80vw; }
   .movie-grid {
     margin: 30px 20px 0; }
   .todays-trending {
     font-size: 30%; } }
 
-@media (max-width: 500) {
+@media (max-width: 500px) {
+  .input-search {
+    width: 90vw; }
+  .search-outputs {
+    width: 90vw; }
   .todays-trending h3 {
-    font-size: 1rem;
-    color: blue; }
+    font-size: 2.4rem; }
   .todays-trending h2 {
-    color: blue; } }
+    font-size: 3.6rem;
+    margin: 0 0 5px; }
+  .todays-trending .todays-more {
+    font-size: 3rem;
+    height: 40px; } }
