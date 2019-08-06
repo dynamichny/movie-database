@@ -1,6 +1,8 @@
 /* eslint-disable no-use-before-define */
 const key = '485dd1f1ee71083619712efed20ee4bb';
 const body = document.querySelector('body');
+const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+
 window.onload = function() {
   fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`)
     .then(resp => resp.json())
@@ -19,6 +21,7 @@ window.onload = function() {
         buildMore(seeMore.dataset.key);
       });
     });
+
   fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${key}`)
     .then(resp => resp.json())
     .then(resp => {
@@ -33,12 +36,22 @@ window.onload = function() {
         });
       });
     });
+  buildWatchList();
+
   document.querySelector('.input-search').addEventListener(
     'keyup',
     debounce(() => {
       searchMovies(document.querySelector('.input-search').value);
     }, 80)
   );
+
+  document.querySelector('.watchlist-link').addEventListener('click', () => {
+    document.querySelector('.watchlist').classList.add('watchlist-show');
+
+    document.querySelector('.close-watchlist').addEventListener('click', () => {
+      document.querySelector('.watchlist').classList.remove('watchlist-show');
+    });
+  });
 };
 
 function buildPoster(element) {
@@ -66,7 +79,12 @@ async function buildMore(id) {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US`
   );
-
+  let wlText;
+  if (search(id, watchlist)) {
+    wlText = await 'Remove from watchlist';
+  } else {
+    wlText = await 'To watchlist';
+  }
   const resp = await response.json();
   const moviePopup = await document.createElement('section');
   await moviePopup.classList.add('movie-popup');
@@ -81,7 +99,7 @@ async function buildMore(id) {
           }" alt="Here should be a poster." />
           <div class="descrpition">
             <div class="description-heading">
-              <button class="close"><div></div></button>
+              <button class="close close-more"><div></div></button>
               <p class="title">${resp.title}</p>
               <div class="generes-length">
                 <p class="generes"></p>
@@ -93,7 +111,7 @@ async function buildMore(id) {
               <div class="info">
                 <div class="rating">
                   <p class="rating1"><b>${resp.vote_average}</b>/10</p>
-                  <p class="rating2">rating</p>
+                  <p class="rating2">${resp.vote_count} votes</p>
                 </div>
                 <div class="realise">
                   <p class="realise1">${resp.release_date}</p>
@@ -106,14 +124,27 @@ async function buildMore(id) {
               <div class="btn-seemore"><a href='https://www.imdb.com/title/${
                 resp.imdb_id
               }' target='_blank'>See more</a></div>
-              <div class="btn-towatchlist">To watchlist</div>
+              <div class="btn-towatchlist">${wlText}</div>
             </div>
           </div>
         </div>
       </div>`;
   body.appendChild(moviePopup);
-  document.querySelector('.close').addEventListener('click', () => {
+
+  document.querySelector('.close-more').addEventListener('click', () => {
     body.removeChild(moviePopup);
+  });
+
+  document.querySelector('.btn-towatchlist').dataset.key = resp.id;
+  document.querySelector('.btn-towatchlist').addEventListener('click', e => {
+    switchInWatchlist(e.target.dataset.key);
+    buildWatchList();
+    if (search(id, watchlist)) {
+      document.querySelector('.btn-towatchlist').innerHTML =
+        'Remove from watchlist';
+    } else {
+      document.querySelector('.btn-towatchlist').innerHTML = 'To watchlist';
+    }
   });
 }
 
@@ -164,6 +195,7 @@ function debounce(func, wait = 20, immediate = true) {
   let timeout;
   return function() {
     const context = this;
+    // eslint-disable-next-line prefer-rest-params
     const args = arguments;
     const later = function() {
       timeout = null;
@@ -174,4 +206,91 @@ function debounce(func, wait = 20, immediate = true) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
+}
+
+function search(nameKey, myArray) {
+  for (let i = 0; i < myArray.length; i += 1) {
+    if (myArray[i].id === nameKey) {
+      return myArray[i];
+    }
+  }
+}
+
+function switchInWatchlist(id) {
+  if (search(id, watchlist)) {
+    const temp = search(id, watchlist);
+    watchlist.splice(watchlist.indexOf(temp), 1);
+  } else {
+    const movie = {
+      id,
+    };
+    watchlist.push(movie);
+  }
+
+  localStorage.setItem('watchlist', JSON.stringify(watchlist));
+}
+
+function buildWatchList() {
+  const wl = document.querySelector('.movies');
+  wl.innerHTML = '';
+  watchlist.map(async el => {
+    await wl.appendChild(await createWatchlistEl(el));
+    const watchlistMovie = document.querySelector(
+      `.watchlist-movie[data-key="${el.id}"] `
+    );
+    const closeBtn = document.querySelector(
+      `.watchlist-movie[data-key="${el.id}"]>.close`
+    );
+    watchlistMovie.addEventListener('click', e => {
+      if (
+        e.target.parentNode.classList[0].includes('close') ||
+        e.target.classList[0].includes('close')
+      )
+        return;
+      buildMore(el.id);
+    });
+    closeBtn.addEventListener('click', () => {
+      const temp = search(el.id, watchlist);
+      watchlist.splice(watchlist.indexOf(temp), 1);
+      localStorage.setItem('watchlist', JSON.stringify(watchlist));
+      buildWatchList();
+    });
+  });
+}
+
+async function createWatchlistEl(obj) {
+  if (obj.title) {
+    const movieDiv = await document.createElement('div');
+    await movieDiv.classList.add('watchlist-movie');
+    movieDiv.dataset.key = await obj.id;
+    movieDiv.innerHTML = await `
+      <button class="close remove-watchlist"><div></div></button>
+      <img src="https://image.tmdb.org/t/p/w200${obj.poster_path}" />
+      <p class="title">${obj.title}</p>
+    `;
+    return movieDiv;
+  }
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${
+      obj.id
+    }?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US`
+  );
+  const resp = await response.json();
+
+  const temp = search(obj.id, watchlist);
+  const newObj = temp;
+  newObj.title = resp.title;
+  newObj.poster_path = resp.poster_path;
+  watchlist.splice(watchlist.indexOf(temp), 1, newObj);
+  localStorage.setItem('watchlist', JSON.stringify(watchlist));
+
+  const movie = await document.createElement('div');
+  await movie.classList.add('watchlist-movie');
+  movie.dataset.key = await resp.id;
+  movie.innerHTML = await `
+      <button class="close remove-watchlist"><div></div></button>
+      <img src="https://image.tmdb.org/t/p/w200${resp.poster_path}" />
+      <p class="title">${resp.title}</p>
+    `;
+  return movie;
 }

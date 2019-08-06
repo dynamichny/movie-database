@@ -1,0 +1,82 @@
+.watchlist {
+  transform: translateX(100%);
+  transition: transform 0.17s ease-in-out;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #181818;
+  z-index: 999999;
+  overflow-y: auto;
+  padding: 6vh 0;
+  box-sizing: border-box; }
+  .watchlist .close-watchlist {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    border: none;
+    background: none;
+    padding: 15px;
+    margin: 0; }
+    .watchlist .close-watchlist div {
+      transform: rotate(45deg);
+      width: 20px;
+      height: 2px;
+      background: white;
+      position: relative; }
+      .watchlist .close-watchlist div::after {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 2px;
+        background: white;
+        top: 9px;
+        left: 9px;
+        transform: rotate(90deg); }
+  .watchlist h2 {
+    color: white;
+    font-size: 3.2rem;
+    text-decoration: underline #01d277;
+    text-align: center; }
+  .watchlist .movies .watchlist-movie {
+    cursor: pointer;
+    position: relative;
+    background: #2d2d2d;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    margin: 10px auto;
+    padding: 0 20px;
+    max-width: 1000px;
+    width: 60%;
+    height: 150px;
+    border-bottom: 1px solid #01d277; }
+    .watchlist .movies .watchlist-movie img {
+      height: 80%; }
+    .watchlist .movies .watchlist-movie .title {
+      color: white;
+      font-size: 3rem;
+      margin: 0 auto;
+      padding: 0 30px;
+      justify-self: center;
+      text-align: center; }
+    .watchlist .movies .watchlist-movie .close {
+      z-index: 100000000000; }
+      .watchlist .movies .watchlist-movie .close div {
+        background: #01d277; }
+        .watchlist .movies .watchlist-movie .close div::after {
+          background: #01d277; }
+
+.watchlist-show {
+  transform: translateX(0%); }
+
+@media (max-width: 750px) {
+  .watchlist .movies .watchlist-movie {
+    width: 80%; } }
+
+@media (max-width: 500px) {
+  .watchlist .movies .watchlist-movie {
+    width: 95%; } }
