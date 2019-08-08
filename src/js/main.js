@@ -1,7 +1,10 @@
 /* eslint-disable no-use-before-define */
 const key = '485dd1f1ee71083619712efed20ee4bb';
 const body = document.querySelector('body');
+const header = document.querySelector('header');
+const headerText = document.querySelector('.todays-trending');
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+const tl = new TimelineMax();
 
 window.onload = function() {
   fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`)
@@ -9,6 +12,7 @@ window.onload = function() {
     .then(resp => {
       const randomTrending =
         resp.results[Math.floor(Math.random() * resp.results.length)];
+      TweenMax.set(headerText, { visibility: 'visible' });
       document.querySelector(
         '.bg'
       ).style.backgroundImage = `url('https://image.tmdb.org/t/p/original${
@@ -20,6 +24,10 @@ window.onload = function() {
       seeMore.addEventListener('click', () => {
         buildMore(seeMore.dataset.key);
       });
+
+      TweenMax.set(headerText, { visibility: 'visible' });
+      TweenMax.from(header, 0.35, { opacity: 0.2 });
+      TweenMax.from(headerText, 0.3, { visibility: 'visible', x: '-140%' });
     });
 
   fetch(`https://api.themoviedb.org/3/trending/movie/week?api_key=${key}`)
@@ -30,7 +38,9 @@ window.onload = function() {
           .querySelector('.trending-week>.movie-grid')
           .appendChild(buildPoster(e));
       });
-      document.querySelectorAll('.movie').forEach(movie => {
+      const posters = document.querySelectorAll('.movie');
+      TweenMax.staggerFrom(posters, 0.18, { opacity: 0, y: -30 }, 0.14);
+      posters.forEach(movie => {
         movie.addEventListener('click', () => {
           buildMore(movie.dataset.key);
         });
@@ -130,9 +140,12 @@ async function buildMore(id) {
         </div>
       </div>`;
   body.appendChild(moviePopup);
-
+  TweenMax.from(moviePopup, 0.2, { opacity: 0 });
   document.querySelector('.close-more').addEventListener('click', () => {
-    body.removeChild(moviePopup);
+    TweenMax.to(moviePopup, 0.2, { opacity: 0 });
+    setTimeout(() => {
+      body.removeChild(moviePopup);
+    }, 250);
   });
 
   document.querySelector('.btn-towatchlist').dataset.key = resp.id;
