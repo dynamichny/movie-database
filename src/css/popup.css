@@ -94,15 +94,15 @@
   text-align: center;
   align-items: center; }
 
-.rating, .realise {
+.rating, .release {
   margin: 20px; }
 
-.rating1, .realise1 {
+.rating1, .release1 {
   font-size: 3.0rem;
   color: black;
   margin: 0; }
 
-.rating2, .realise2 {
+.rating2, .release2 {
   margin: 0;
   font-size: 1.3rem; }
 
@@ -226,10 +226,10 @@
     .description-heading .info {
       margin: 0;
       color: white; }
-    .description-heading .rating1, .description-heading .realise1 {
+    .description-heading .rating1, .description-heading .release1 {
       font-size: 2.8rem;
       color: white; }
-    .description-heading .rating, .description-heading .realise {
+    .description-heading .rating, .description-heading .release2 {
       margin-top: 10px;
       margin-bottom: 10px; }
   .description-text {

@@ -78,7 +78,7 @@ function createPoster(element) {
     }
     <div class="description">
       <p class="title">${element.title}</p>
-      <p class="species">Realise date: ${element.release_date
+      <p class="species">Release date: ${element.release_date
         .split('-')
         .join('.')}</p>
   </div>`;
@@ -123,9 +123,9 @@ async function showMore(id) {
                   <p class="rating1"><b>${resp.vote_average}</b>/10</p>
                   <p class="rating2">${resp.vote_count} votes</p>
                 </div>
-                <div class="realise">
-                  <p class="realise1">${resp.release_date}</p>
-                  <p class="realise2">realise date</p>
+                <div class="release">
+                  <p class="release1">${resp.release_date}</p>
+                  <p class="release2">release date</p>
                 </div>
               </div>
             </div>
