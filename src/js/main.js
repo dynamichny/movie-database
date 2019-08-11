@@ -1,10 +1,10 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-use-before-define */
 const key = '485dd1f1ee71083619712efed20ee4bb';
 const body = document.querySelector('body');
 const header = document.querySelector('header');
 const headerText = document.querySelector('.todays-trending');
 const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-const tl = new TimelineMax();
 
 window.onload = function() {
   fetch(`https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`)
@@ -22,7 +22,7 @@ window.onload = function() {
       const seeMore = document.querySelector('.todays-more');
       seeMore.dataset.key = randomTrending.id;
       seeMore.addEventListener('click', () => {
-        buildMore(seeMore.dataset.key);
+        showMore(seeMore.dataset.key);
       });
 
       TweenMax.set(headerText, { visibility: 'visible' });
@@ -36,13 +36,13 @@ window.onload = function() {
       resp.results.forEach(e => {
         document
           .querySelector('.trending-week>.movie-grid')
-          .appendChild(buildPoster(e));
+          .appendChild(createPoster(e));
       });
       const posters = document.querySelectorAll('.movie');
       TweenMax.staggerFrom(posters, 0.18, { opacity: 0, y: -30 }, 0.14);
       posters.forEach(movie => {
         movie.addEventListener('click', () => {
-          buildMore(movie.dataset.key);
+          showMore(movie.dataset.key);
         });
       });
     });
@@ -64,7 +64,7 @@ window.onload = function() {
   });
 };
 
-function buildPoster(element) {
+function createPoster(element) {
   const movie = document.createElement('div');
   movie.classList.add('movie');
   movie.dataset.key = element.id;
@@ -85,7 +85,7 @@ function buildPoster(element) {
   return movie;
 }
 
-async function buildMore(id) {
+async function showMore(id) {
   const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}?api_key=485dd1f1ee71083619712efed20ee4bb&language=en-US`
   );
@@ -182,7 +182,7 @@ function searchMovies(query) {
       );
       document.querySelectorAll('.output').forEach(each => {
         each.addEventListener('click', () => {
-          buildMore(each.dataset.key);
+          showMore(each.dataset.key);
           document.querySelector('.search-outputs').innerHTML = '';
         });
       });
@@ -260,7 +260,7 @@ function buildWatchList() {
         e.target.classList[0].includes('close')
       )
         return;
-      buildMore(el.id);
+      showMore(el.id);
     });
     closeBtn.addEventListener('click', () => {
       const temp = search(el.id, watchlist);
